@@ -4,6 +4,8 @@
 
 ![demo](https://media.giphy.com/media/EOZ9bIXb5cneFHVHko/giphy.gif)
 
+[Demo site](https://nuxt-break-egg-7k2uog36k.now.sh/)
+
 ## Build Setup
 
 ``` bash
