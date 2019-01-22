@@ -2,6 +2,8 @@
 
 > Browser based breaking egg app via NuxtJS
 
+![demo](https://media.giphy.com/media/EOZ9bIXb5cneFHVHko/giphy.gif)
+
 ## Build Setup
 
 ``` bash

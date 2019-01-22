@@ -1,73 +1,89 @@
 <template>
   <v-layout
-    column
+    fill-height
     justify-center
     align-center
-  >
-    <v-flex
-      xs12
-      sm8
-      md6
     >
+    <v-flex xs12>
       <div class="text-xs-center">
-        <logo />
-        <vuetify-logo />
+        <span v-if="!broken" class="count">{{ count }}</span>
+        <span v-if="broken" class="message">{{ message }}</span>
       </div>
-      <v-card>
-        <v-card-title class="headline">Welcome to the Vuetify + Nuxt.js template</v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>For more information on Vuetify, check out the <a
-            href="https://vuetifyjs.com"
-            target="_blank"
-          >documentation</a>.</p>
-          <p>If you have questions, please join the official <a
-            href="https://chat.vuetifyjs.com/"
-            target="_blank"
-            title="chat"
-          >discord</a>.</p>
-          <p>Find a bug? Report it on the github <a
-            href="https://github.com/vuetifyjs/vuetify/issues"
-            target="_blank"
-            title="contribute"
-          >issue board</a>.</p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-          >Nuxt Documentation</a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-          >Nuxt GitHub</a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            flat
-            nuxt
-            to="/inspire"
-          >Continue</v-btn>
-        </v-card-actions>
-      </v-card>
+      <div class="text-xs-center">
+        <img :src="eggImage" @click="touch()" max-width="400px" />
+      </div>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
+import { mapActions, mapState } from 'vuex'
 
 export default {
-  components: {
-    Logo,
-    VuetifyLogo
+  data () {
+    return {
+      eggImage: require('~/assets/egg_0.png'),
+      thresholds: [
+        {
+          count: 10000,
+          img: require('~/assets/egg_4.png'),
+          broken: true,
+        },
+        {
+          count: 8000,
+          img: require('~/assets/egg_4.png'),
+          broken: false,
+        },
+        {
+          count: 5000,
+          img: require('~/assets/egg_3.png'),
+          broken: false,
+        },
+        {
+          count: 1000,
+          img: require('~/assets/egg_2.png'),
+          broken: false,
+        },
+        {
+          count: 100,
+          img: require('~/assets/egg_1.png'),
+          broken: false,
+        },
+      ],
+      broken: false,
+      message: "割れると思うなよ",
+    }
+  },
+  computed: mapState(['count']),
+  methods: {
+    ...mapActions(['incrCount']),
+    touch () {
+      this.incrCount()
+      for (let val of this.thresholds) {
+        if (this.count >= val['count']) {
+          this.eggImage = val['img']
+          this.broken = val['broken']
+          break
+        }
+      }
+    },
   }
 }
 </script>
+
+<style>
+.count {
+  font-size: 60px;
+}
+.message {
+  font-size: 50px;
+}
+
+img {
+  width: 400px;
+}
+
+img:active {
+  width: 395px;
+}
+</style>
